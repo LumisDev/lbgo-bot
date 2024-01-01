@@ -1,0 +1,29 @@
+name: Deploy to Netlify
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 14
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Set up environment variables
+      run: |
+        echo "API_KEY=${{ secrets.DISCORD_KEY }}" >> $GITHUB_ENV
+    - name: Deploy to Netlify
+      run: netlify deploy --prod
